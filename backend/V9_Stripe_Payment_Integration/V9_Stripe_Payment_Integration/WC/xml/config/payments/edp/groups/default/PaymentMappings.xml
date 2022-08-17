@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+==================================================
+Copyright [2021] [HCL Technologies]
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==================================================
+-->
+
+<!-- ===================================================================================================
+  Each entry maps a payment method name to two types of configuration.
+  
+  paymentMethod:        Defines the payment method name. It is the payment policy name defined in the 
+                        HCL Commerce Policy table.
+  paymentConfiguration: Defines how the payment method is associated to a payment back-end system. 
+                        It is defined in PaymentMethodConfigurations.xml.
+  paymentActionRule:    Defines the payment actions behaviour for the payment method. It is defined in
+                        PaymentRules.xml.
+==================================================================================================== -->
+<PaymentMappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="com/ibm/commerce/edp/parsers/PaymentMappings.xsd">
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="CreditCardOffline" paymentMethod="VISA"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="CreditCardOffline" paymentMethod="Master Card"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="CreditCardOffline" paymentMethod="Discover"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="CreditCardOffline" paymentMethod="AMEX"/>
+    <Mapping paymentActionRule="Early Deposit"
+        paymentConfiguration="CheckOffline" paymentMethod="Check"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="LineOfCreditOffline" paymentMethod="LOC"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="BillMeLaterOffline" paymentMethod="BillMeLater"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="BillMeLaterOffline" paymentMethod="PayLater"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="CODOffline" paymentMethod="COD"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="LineOfCredit" paymentMethod="LineOfCredit"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="CompatibleLineOfCredit" paymentMethod="Credit"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="CompatibleCreditCardOffline" paymentMethod="VoidCheckOut"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="CompatibleCreditCardOffline" paymentMethod="Paymentech"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="CompatibleBillMeLaterOffline" paymentMethod="CustomOffline_BillMe"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="CompatibleCODOffline" paymentMethod="CustomOffline_COD"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="CompatibleCreditCardOffline" paymentMethod="OfflineCard"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="CompatibleCreditCardOffline" paymentMethod="VisaNet"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="CompatibleCreditCardOffline" paymentMethod="CompatiblePayment"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="CompatibleCreditCardOffline" paymentMethod="VisaNet_PCard"/>
+    <Mapping paymentActionRule="Early Approval"
+        paymentConfiguration="CompatibleCheckOffline" paymentMethod="BankServACH"/>
+    <Mapping paymentActionRule="Early Deposit"
+        paymentConfiguration="SimplePunchout" paymentMethod="SimplePunchout"/>
+    <Mapping paymentActionRule="Early Deposit"
+        paymentConfiguration="SPSPOffline" paymentMethod="SPSP"/>
+        
+    <!-- Stripe START -->
+	<Mapping paymentActionRule="Early Approval" 
+    	paymentConfiguration="StripeOnlineConfiguration" paymentMethod="Stripe"/>
+	<!-- Stripe END -->
+</PaymentMappings>

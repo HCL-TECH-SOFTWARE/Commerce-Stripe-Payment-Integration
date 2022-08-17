@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+==================================================
+Copyright [2021] [HCL Technologies]
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==================================================
+-->
+
+<!-- ==================================================================
+Use this file to map payment systems to payment plug-ins. 
+
+This file is used by the Payment Plugin Controller to know what plug-ins to use for a particular 
+payment system name in an event-driven payments configuration in PaymentMethodConfiguration.XML.
+ ================================================================== -->
+<Mapper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="PaymentSystemPluginMapper.xsd">
+    <!-- ====================================================================================================
+      (Optional)
+      Specify any keywords that should be retained in the HCL Commerce database rather than not stored. 
+      This is a global setting that applies to all payment instructions for all plug-ins named in this file. 
+      
+      Another two ways to specify the retention of keywords is through:
+         1. The <Keyword> elements in this file;
+         2. The <ProtocolProperties> and <ProtocolProperty> elements in the plug-in deployment descriptor.
+      
+      If the keyworks are not specified in these three ways, they will not be stored in HCL Commerce database.
+     ==================================================================================================== -->
+    <RetainKeywords>
+        <Keyword name="billing_address_id"/>
+        <Keyword name="payment_method"/>
+        <Keyword name="paymentTCId"/>
+        <Keyword name="purchaseorder_id"/>
+        <Keyword name="installmentOption"/>
+        <Keyword name="CPFNumber"/>
+        <Keyword name="numberOfInstallments"/>
+    </RetainKeywords>
+    <!-- ====================================================================================================
+      Use this section to build up the mapping from a payment system name to a payment plug-in under a payment
+      method configuration.
+      
+      A payment system name is a string that is independent of the plug-in name. The payment system name maps 
+      to the payment plug-in used to process the transactions. The payment system name should match between the 
+      PaymentMethodConfiguration.xml (or RefundMethodConfiguration.xml) and PaymentSystemPluginMapping.xml files. 
+     ==================================================================================================== -->
+    <PaymentSystemName name="SimpleOffline">
+        <Mapping paymentConfigurationId="default" pluginName="SimpleOffline">
+            <!-- ====================================================================================================
+     (Optional) 
+     All keywords defined under the <Mapping> element are saved to the HCL Commerce database.
+        name:                The name of the keywords associated with payment protocol data.
+        mask:                The character used to mask the portion of the data which should not be visible.
+        plain:               The length of the plain text (visible portion). 
+        removeAfterApproval: Indicates whether the keyword will be removed from the extended data of the 
+                             payment instruction after the total amount of the payment instruction is approved.
+        searchable:          Indicates whether the keyword can be searched in the HCL Commerce Accelerator 
+                             on the Find Orders page.
+     ==================================================================================================== -->
+            <Keyword mask="-" name="cc_cvc" plain="0" removeAfterApproval="true"/>
+            <Keyword mask="*" name="cc_nameoncard" plain="0" removeAfterApproval="true"/>
+            <Keyword mask="*" name="account" plain="-4" searchable="true"/>
+            <Keyword name="check_routing_number"/>
+        </Mapping>
+    </PaymentSystemName>
+    <PaymentSystemName name="LOCPlugin">
+        <Mapping paymentConfigurationId="default" pluginName="LOCPlugin"/>
+    </PaymentSystemName>
+    <PaymentSystemName name="GCPlugin">
+        <Mapping paymentConfigurationId="default" pluginName="SimpleOffline">
+            <Keyword mask="*" name="account" plain="-4" searchable="true"/>
+        </Mapping>
+    </PaymentSystemName>
+    <PaymentSystemName name="Paymentech">
+        <Mapping paymentConfigurationId="default" pluginName="WCPaymentsPlugin">
+            <!-- ====================================================================================================
+      (Optional) 
+       <name>  The name of the plug-in property that should be used in transactions for this particular payment method. 
+               A plug-in can require additional parameters, or a payment configuration can have unique needs. 
+       <value> The value of the named plug-in property.
+     ==================================================================================================== -->
+            <Property name="ProfileName" value="WCPPlugin_Paymentech"/>
+            <Property name="SupportsOnlineTransaction" value="yes"/>
+            <Keyword mask="-" name="cc_cvc" plain="0" removeAfterApproval="true"/>
+            <Keyword mask="*" name="cc_nameoncard" plain="0" removeAfterApproval="true"/>
+            <Keyword mask="*" name="account" plain="-4" searchable="true"/>
+        </Mapping>
+    </PaymentSystemName>
+    <PaymentSystemName name="VisaNet">
+        <Mapping paymentConfigurationId="default" pluginName="WCPaymentsPlugin">
+            <Property name="ProfileName" value="WCPPlugin_VisaNet"/>
+            <Property name="SupportsOnlineTransaction" value="yes"/>
+            <Keyword mask="-" name="cc_cvc" plain="0" removeAfterApproval="true"/>
+            <Keyword mask="*" name="cc_nameoncard" plain="0" removeAfterApproval="true"/>
+            <Keyword mask="*" name="account" plain="-4" searchable="true"/>
+        </Mapping>
+    </PaymentSystemName>
+    <PaymentSystemName name="BankServ">
+        <Mapping paymentConfigurationId="default" pluginName="WCPaymentsPlugin">
+            <Property name="ProfileName" value="WCPPlugin_BankServACH"/>
+            <Property name="SupportsOnlineTransaction" value="yes"/>
+            <Keyword mask="*" name="account" plain="-4" searchable="true"/>
+        </Mapping>
+    </PaymentSystemName>
+    <PaymentSystemName name="SimplePunchout">
+        <Mapping paymentConfigurationId="default" pluginName="SimplePunchoutPlugin"/>
+    </PaymentSystemName>
+    
+    <!-- Stripe START -->
+	<PaymentSystemName name="StripeOnlineSystem">
+		<Mapping paymentConfigurationId="default" pluginName="StripePaymentPlugin" />
+	</PaymentSystemName>
+	<!-- Stripe END -->
+</Mapper>

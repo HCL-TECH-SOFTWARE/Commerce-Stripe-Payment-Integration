@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+==================================================
+Copyright [2021] [HCL Technologies]
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==================================================
+-->
+
+<!-- ===================================================================================================
+  This file defines the core behavior of payment actions executed for event-driven payments. 
+  It defines how the required target state of the payment is achieved in terms of actual payment 
+  actions defined by the payment back-end system. Possible payment actions are: Approve, Deposit, 
+  ReverseApproval, Credit, ConsumeAmount, and Error. However, the valid target states that can be 
+  defined in payment actions are: DNE (does not exist), APPROVED, and DEPOSITED.
+  
+  TargetDNE:       The target state is DNE. 
+  TargetApproved:  The target state is APPORVED.
+  TargetDeposited: The target state is DEPOSITED.
+  
+  The markup within each of these elements defines the action that should be taken to move the payment 
+  object from its current state to the target state when the current state of the payment is one of 
+  the following states: DNE, APPROVED, or DEPOSITED.
+  
+  CurrentDNE:       The current state is DNE.
+  CurrentApproved:  The current state is APPROVED.
+  CurrentDeposited: The current state is DEPOSITED.
+  
+  For each pair of current state and target state, the amount of the payment and the amount of the payment
+  requested are used to determine the payment actions:
+  
+  AmountLessThanRequested:    The amount of the payment is less than the payment requested.
+  AmountEqualsRequested:      The amount of the payment equals to the payment requested.
+  AmountGreaterThanRequested: The amount of the payment is greater than the payment requested.
+  
+  The following informations are defined for each payment action:
+  name:   The name of the payment action. Possible values are: 
+          Approve - Approves the payment. 
+          ReverseApproval - Reverses the payment approval. 
+          Deposit - Deposits the payment. 
+          Credit - Refunds the payment. 
+          ConsumeAmount - Updates information internally in WebSphere Commerce but does not perform any 
+                          direct payment action with a payment back-end system. For example, ConsumeAmount
+                          can be used to update information about a credit card expiry date. An update 
+                          is always performed if a payment action is defined. 
+          Error - Generates an error. 
+  msg:    This parameter is used when the Action name="Error" and holds the actual text of the error message. 
+  amount: When the amount of the payment is being processed, it is either: 
+          The same as the amount currently known by the system (existing) 
+          Different from the current amount (delta) 
+          The same as the payment amount requested (requested) 
+          Possible values for the amount attribute are: delta, requested, existing. 
+  target: Specifies the target payment object for the action. Possible values are for the target attribute are: 
+          new - A new payment object should be created and data should be written to the database. 
+          additional - An additional operation is expected to follow. Data is kept in memory but is not 
+                       written to the database. 
+          existing - The payment is the same amount currently expected by the system. 
+==================================================================================================== -->
+
+<PaymentActions
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="com/ibm/commerce/edp/parsers/PaymentActions.xsd">
+
+	<TargetDNE>
+
+		<CurrentDNE>
+		</CurrentDNE>
+		
+		<CurrentApproved>
+		  <AmountLessThanRequested>
+		  </AmountLessThanRequested>
+		  <AmountEqualsRequested>
+		  </AmountEqualsRequested>
+		  <AmountGreaterThanRequested>
+		  </AmountGreaterThanRequested>
+		</CurrentApproved>
+
+		<CurrentDeposited>
+		  <AmountLessThanRequested>
+		  </AmountLessThanRequested>
+		  <AmountEqualsRequested>
+		  </AmountEqualsRequested>
+		  <AmountGreaterThanRequested>
+		  </AmountGreaterThanRequested>
+		</CurrentDeposited>
+
+	</TargetDNE>
+	
+	<TargetApproved>
+
+		<CurrentDNE>
+			<Action name="Approve" amount="requested" target="new"/>
+		</CurrentDNE>
+
+		<CurrentApproved>
+
+			<AmountLessThanRequested>
+				<Action name="ConsumeAmount"/>
+				<Action name="Approve" amount="delta" target="new"/>
+			</AmountLessThanRequested>
+			
+			<AmountEqualsRequested>
+				<Action name="ConsumeAmount"/>
+			</AmountEqualsRequested>
+			
+			<AmountGreaterThanRequested>
+				<Action name="ConsumeAmount"/>
+			</AmountGreaterThanRequested>
+
+		</CurrentApproved>
+
+		<CurrentDeposited>
+
+			<AmountLessThanRequested>
+				<Action name="ConsumeAmount"/>
+				<Action name="Approve" amount="delta" target="new"/>
+			</AmountLessThanRequested>
+			
+			<AmountEqualsRequested>
+				<Action name="ConsumeAmount"/>
+			</AmountEqualsRequested>
+			
+			<AmountGreaterThanRequested>
+				<Action name="ConsumeAmount"/>
+			</AmountGreaterThanRequested>
+
+		</CurrentDeposited>
+
+	</TargetApproved>
+	
+	<TargetDeposited>
+
+		<CurrentDNE>
+			<Action name="ApproveAndDeposit" amount="requested" target="new"/>
+		</CurrentDNE>
+
+		<CurrentApproved>
+
+			<AmountLessThanRequested>
+				<Action name="Deposit" amount="existing" target="existing"/>
+				<Action name="Approve" amount="delta" target="additional"/>
+				<Action name="Deposit" amount="delta" target="existing"/>
+			</AmountLessThanRequested>
+			
+			<AmountEqualsRequested>
+				<Action name="Deposit" amount="existing" target="existing"/>
+			</AmountEqualsRequested>
+			
+			<AmountGreaterThanRequested>
+				<Action name="Deposit" amount="requested" target="existing"/>
+			</AmountGreaterThanRequested>
+
+		</CurrentApproved>
+
+		<CurrentDeposited>
+
+			<AmountLessThanRequested>
+			    <Action name="ConsumeAmount" target="existing"/>
+				<Action name="Approve" amount="delta" target="additional"/>
+				<Action name="Deposit" amount="delta" target="existing"/>
+			</AmountLessThanRequested>
+			
+			<AmountEqualsRequested>
+				<Action name="ConsumeAmount"/>
+			</AmountEqualsRequested>
+			
+			<AmountGreaterThanRequested>
+				<Action name="ConsumeAmount"/>
+			</AmountGreaterThanRequested>
+
+		</CurrentDeposited>
+
+	</TargetDeposited>
+	
+</PaymentActions>

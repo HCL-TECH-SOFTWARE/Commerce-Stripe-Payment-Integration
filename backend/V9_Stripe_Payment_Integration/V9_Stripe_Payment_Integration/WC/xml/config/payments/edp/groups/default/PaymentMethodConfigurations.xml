@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+==================================================
+Copyright [2021] [HCL Technologies]
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==================================================
+-->
+
+<!-- ===================================================================================================
+  Each entry in this file includes the following information: 
+
+  name:                The name of the payment method configuration
+  paymentSystemName:   The name of the payment back-end system. The payment system name should be consistent 
+                       with a payment system name in the PaymentSystemPluginMapping.xml file. 
+  systemEditable:      Indicates whether the event-driven payments service is allowed to increase the amount, 
+                       if required, of a payment to be processed using that payment method.
+  humanEditable:       Indicates whether a customer or service representative can increase the amount for a 
+                       payment method during an edit operation.
+  refundAllowed:       Specifies whether a refund can be issued for an order that has used this payment method
+                       (true or false). 
+  minimumAmount:       The minimumAmount specifies the lower limit of a payment method in situations where 
+                       minimum limits must be imposed. 
+  maximumAmount:       The maximumAmount specifies the upper limit of a payment method. 
+  priority:            Specifies the priority of the consumption of the payment method when more than one 
+                       payment method is used as payment. Values are: HIGH, MEDIUM, and LOW. 
+  partiallyConsumable: Indicates whether the payment method can be used up partially or not (true or false). 
+  transactionCompensationAction: Specifies the compensation action type when transaction rolls back. Values are: REVERSE and TRACK.
+==================================================================================================== -->
+<PaymentMethodConfigurations
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="com/ibm/commerce/edp/parsers/PaymentMethodConfigurations.xsd">
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0"
+        name="CreditCardOffline" partiallyConsumable="true"
+        paymentSystemName="SimpleOffline" priority="MEDIUM"
+        refundAllowed="true" systemEditable="true"/>
+    <PaymentMethodConfiguration dependentCreditRequired="true"
+        humanEditable="false" maximumAmount="Unbounded"
+        minimumAmount="0" name="SimplePunchout"
+        partiallyConsumable="true" paymentSystemName="SimplePunchout"
+        priority="MEDIUM" refundAllowed="true" systemEditable="true"/>
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0"
+        name="CreditCardOnline" partiallyConsumable="true"
+        paymentSystemName="Paymentech" priority="MEDIUM"
+        refundAllowed="true" systemEditable="true"/>
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0" name="CheckOffline"
+        partiallyConsumable="false" paymentSystemName="SimpleOffline"
+        priority="LOW" refundAllowed="false" systemEditable="true"/>
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0"
+        name="LineOfCreditOffline" partiallyConsumable="true"
+        paymentSystemName="SimpleOffline" priority="LOW"
+        refundAllowed="true" systemEditable="true"/>
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0" name="LineOfCredit"
+        partiallyConsumable="true" paymentSystemName="LOCPlugin"
+        priority="LOW" refundAllowed="true" systemEditable="true"/>
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0" name="VisaNet"
+        partiallyConsumable="true" paymentSystemName="VisaNet"
+        priority="MEDIUM" refundAllowed="true" systemEditable="true"/>
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0"
+        name="BillMeLaterOffline" partiallyConsumable="true"
+        paymentSystemName="SimpleOffline" priority="LOW"
+        refundAllowed="false" systemEditable="true"/>
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0" name="CODOffline"
+        partiallyConsumable="true" paymentSystemName="SimpleOffline"
+        priority="LOW" refundAllowed="false" systemEditable="true"/>
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0"
+        name="CompatibleCreditCardOffline" partiallyConsumable="true"
+        paymentSystemName="NON-PPC" priority="MEDIUM"
+        refundAllowed="true" systemEditable="true"/>
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0"
+        name="CompatibleCreditCardOnline" partiallyConsumable="true"
+        paymentSystemName="NON-PPC" priority="MEDIUM"
+        refundAllowed="true" systemEditable="true"/>
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0"
+        name="CompatibleCheckOffline" partiallyConsumable="true"
+        paymentSystemName="NON-PPC" priority="LOW" refundAllowed="false" systemEditable="true"/>
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0"
+        name="CompatibleLineOfCreditOffline" partiallyConsumable="true"
+        paymentSystemName="NON-PPC" priority="LOW" refundAllowed="true" systemEditable="true"/>
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0"
+        name="CompatibleLineOfCredit" partiallyConsumable="true"
+        paymentSystemName="NON-PPC" priority="LOW" refundAllowed="true" systemEditable="true"/>
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0" name="VisaNet"
+        partiallyConsumable="true" paymentSystemName="NON-PPC"
+        priority="MEDIUM" refundAllowed="true" systemEditable="true"/>
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0"
+        name="CompatibleBillMeLaterOffline" partiallyConsumable="true"
+        paymentSystemName="NON-PPC" priority="LOW" refundAllowed="false" systemEditable="true"/>
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0"
+        name="CompatibleCODOffline" partiallyConsumable="true"
+        paymentSystemName="NON-PPC" priority="LOW" refundAllowed="false" systemEditable="true"/>
+    <PaymentMethodConfiguration humanEditable="true"
+        maximumAmount="Unbounded" minimumAmount="0" name="SPSPOffline"
+        partiallyConsumable="false" paymentSystemName="SimpleOffline"
+        priority="LOW" refundAllowed="false" systemEditable="true"/>
+        
+    <!-- Stripe START -->
+	<PaymentMethodConfiguration dependentCreditRequired="true" humanEditable="true"
+		maximumAmount="Unbounded" minimumAmount="0" name="StripeOnlineConfiguration"
+		partiallyConsumable="true" paymentSystemName="StripeOnlineSystem" priority="HIGH"
+		refundAllowed="true" systemEditable="true"/>
+	<!-- Stripe END -->
+</PaymentMethodConfigurations>

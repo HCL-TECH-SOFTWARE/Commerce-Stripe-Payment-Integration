@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+==================================================
+Copyright [2021] [HCL Technologies]
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==================================================
+-->
+
+<!-- ===================================================================================================
+  This is the plug-in deployment descriptor for the StripePaymentPlugin plug-in
+==================================================================================================== -->
+<Plugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../PaymentPlugin.xsd">
+<!-- ===================================================================================================
+  <PluginInformation> includes all the information and configurations for StripePaymentPlugin Plug-in. It includes
+  the following attributes:
+  jndi:    The Java Naming and Directory Interface (JNDI) lookup name for the home interface of the 
+           StripePaymentPlugin plug-in's stateless session bean. 
+  home:    The fully qualified name of the home interface for the SimpleOffline plug-in's stateless session bean. 
+  name:    The name of the StripePaymentPlugin plug-in.
+  version: The version of the StripePaymentPlugin plug-in implementation.
+  vendor:  The vendor providing the StripePaymentPlugin plug-in implementation. 
+  independentCredit: Indication of whether the plug-in supports independent credits. 
+  virtualTerminal: The URL of the payment back-end system administration user interface. 
+==================================================================================================== -->
+  <PluginInformation 
+        jndi="ejblocal:com.hcl.commerce.payments.stripe.beans.StripePaymentPluginBean"
+  		name="StripePaymentPlugin" 
+  		version="1.0.0" 
+  		vendor="Stripe"
+  		independentCredit="true" 
+  		virtualTerminal="none">
+<!-- ===================================================================================================
+  (Optional) 
+  <ProtocolProperties> defines the name of the keywords that should be retained in the WebSphere Commerce
+  database for LOC plug-in. Protocol properties are specified inside a <ProtocolProperties> element (more
+  than one can be specified). Include the optional attribute keep="true" to retain the data for this 
+  keyword in the database.
+==================================================================================================== -->
+
+  		<ProtocolProperties>
+		
+  			<ProtocolProperty name="billing_address_id" keep="true"/>
+			<ProtocolProperty name="pay_token" keep="true"/>
+			<ProtocolProperty name="StripeEmailId" keep="true"/>
+  			
+ 		</ProtocolProperties>
+  </PluginInformation>
+  
+</Plugin>

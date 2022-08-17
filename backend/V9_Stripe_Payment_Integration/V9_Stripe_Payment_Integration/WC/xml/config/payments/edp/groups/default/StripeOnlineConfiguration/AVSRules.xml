@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+==================================================
+Copyright [2021] [HCL Technologies]
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==================================================
+-->
+<!--
+ ===================================================================================================
+  This file determines what the event-driven payments responses should be when AVS scores 0 to 4 are 
+  received for credit card payment methods.
+  
+  The ScoreRule element maps the payment plug-in responses for AVS scores, as per the payment plug-in 
+  specification. The response values can be changed if the defaults (as shown) are not compatible with 
+  merchant policies for AVS. 
+  
+  from:        The AVS response code returned by payment plug-in
+  to:          The common AVS response code in WebSphere Commerce:
+               0: Both street address and zip code match. 
+               1: Street address matches, but zip code does not. 
+               2: Zip code matches, but street address does not. 
+               3: Neither street address nor zip code match. 
+               4: AVS result not available. 
+  response:    Specifies what the event-driven payments response should be when that particular AVS score
+               is received. This attribute is the only configurable part of this file. Type Pass, 
+               AttentionRequired, or Reject as appropriate. 
+  description: The description of the AVS code
+  
+==================================================================================================== 
+-->
+<ScoreRules
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="com/ibm/commerce/edp/parsers/ScoreAndResponseRules.xsd">
+	<ScoreRule from="0" to="0" response="Pass" description="AVS Complete Match"/>
+	<ScoreRule from="1" to="1" response="Pass" description="AVS Street Address Match"/>
+	<ScoreRule from="2" to="2" response="AttentionRequired" description="AVS Postalcode Match"/>
+	<ScoreRule from="3" to="3" response="Reject" description="AVS No Match"/>
+	<ScoreRule from="4" to="4" response="Pass" description="AVS Other Reponse"/>
+	<ScoreRule from="5" to="5" response="AttentionRequired" description="Decision manager review"/>	
+</ScoreRules>
