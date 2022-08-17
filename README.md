@@ -12,9 +12,8 @@ If you have questions or encounter problems with an HCL Commerce open source ass
 **The implemntation includes below components**
 
  - Stripe Account
-
  - Integrating Stripe Backend to HCL Commerce V9.1.x.
-
+ - Tested with 9.1.9
  - Frontend - Emerald Storefront
  
 ## Step- 0 : Stripe Account
