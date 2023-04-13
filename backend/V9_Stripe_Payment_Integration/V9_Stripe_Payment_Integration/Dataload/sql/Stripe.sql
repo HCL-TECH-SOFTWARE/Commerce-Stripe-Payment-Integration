@@ -1,6 +1,6 @@
 /**
 *==================================================
-Copyright [2021] [HCL Technologies]
+Copyright [2022] [HCL America, Inc.]
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,3 +25,11 @@ VALUES (( select POLICY_ID from policy where policyname = 'Stripe' ), -1 ,'Strip
 INSERT INTO POLICYCMD (POLICY_ID,BUSINESSCMDCLASS,PROPERTIES,OPTCOUNTER) VALUES ((select POLICY_ID from policy where policyname = 'Stripe'),'com.ibm.commerce.payment.actions.commands.DoPaymentActionsPolicyCmdImpl',null,1);
 INSERT INTO POLICYCMD (POLICY_ID,BUSINESSCMDCLASS,PROPERTIES,OPTCOUNTER) VALUES ((select POLICY_ID from policy where policyname = 'Stripe'),'com.ibm.commerce.payment.actions.commands.EditPaymentInstructionPolicyCmdImpl',null,1);
 INSERT INTO POLICYCMD (POLICY_ID,BUSINESSCMDCLASS,PROPERTIES,OPTCOUNTER) VALUES ((select POLICY_ID from policy where policyname = 'Stripe'),'com.ibm.commerce.payment.actions.commands.QueryPaymentsInfoPolicyCmdImpl',null,1);
+
+
+INSERT INTO storeconf(STOREENT_ID, NAME, VALUE, OPTCOUNTER) 
+values(11,'stripePublishableApiKey','<Public key>',0);
+
+
+INSERT INTO storeconf(STOREENT_ID, NAME, VALUE, OPTCOUNTER) 
+values(11,'stripeApiKey','<private key>',0);

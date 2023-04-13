@@ -1,6 +1,6 @@
 /**
 *==================================================
-Copyright [2021] [HCL Technologies]
+Copyright [2022] [HCL Technologies]
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import javax.ejb.Local;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import com.ibm.commerce.foundation.internal.server.services.registry.StoreConfigurationRegistry;
 import com.ibm.commerce.foundation.logging.LoggingHelper;
 import com.ibm.commerce.payments.plugin.CommunicationException;
 import com.ibm.commerce.payments.plugin.ConfigurationException;
@@ -53,24 +54,40 @@ public class StripePaymentPluginBean implements Plugin {
 	
 	private static final String CLASS_NAME = "StripePaymentPluginBean";
 	private static final Logger LOGGER = Logger.getLogger(CLASS_NAME);
+	private static final String STRIPE_API_KEY="stripeApiKey";
 
 	/**
 	 * Default constructor.
 	 */
 	public StripePaymentPluginBean() {
 	}
-
+	/**
+     * This method is used to get the value from STORECONF for the name provided.
+     * 
+     * @param anStoreId
+     * @param name
+     * @return
+     */
+    public static final String getConfigValue(Integer anStoreId, String name) {
+        final String methodName = "getConfigValue";
+        if (LoggingHelper.isEntryExitTraceEnabled(LOGGER))
+            LOGGER.entering(CLASS_NAME, methodName, new Object[] { anStoreId, name });
+        StoreConfigurationRegistry storeConfigurationRegistry = StoreConfigurationRegistry.getSingleton();
+        String value = storeConfigurationRegistry.getValue(anStoreId, name);
+        if (LoggingHelper.isEntryExitTraceEnabled(LOGGER))
+            LOGGER.exiting(CLASS_NAME, methodName);
+        return value;
+    }
 	@Override
 	public FinancialTransaction approve(PluginContext pluginContext, FinancialTransaction transaction, boolean flag)
 			throws CommunicationException, PluginException {
 		final String METHOD_NAME = "approve";
-		Stripe.apiKey = "<STRIPE PRIVATE KEY>";
-
+		Integer storeId = Integer.valueOf(transaction.getPayment().getPaymentInstruction().getStore());
+		Stripe.apiKey = getConfigValue(storeId, "stripeApiKey");
 		if (LoggingHelper.isEntryExitTraceEnabled(LOGGER))
 			LOGGER.entering(CLASS_NAME, METHOD_NAME);
 		
 		ExtendedData data = transaction.getPayment().getPaymentInstruction().getExtendedData();
-		
 		try {
 			String pay_token = data.getString("pay_token");
 			int amount = (int) Math.round(100*transaction.getPayment().getPaymentInstruction().getAmount().doubleValue());
