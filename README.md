@@ -7,7 +7,7 @@ If you have questions or encounter problems with an HCL Commerce open source ass
 
 ## HCLC Stripe Payment Integration Asset
 
-**Prerequisites:** HCL Commerce V9.1.x / HCL Commerce React Storefront SDK
+**Prerequisites:** HCL Commerce V9.1.x / HCL Commerce React Storefront SDK. Test till 9.1.11 Release.
 
 **The implemntation includes below components**
 
